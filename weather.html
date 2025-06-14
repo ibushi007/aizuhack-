@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>simpleweather</title>
+    <meta name="description" content="天気APIから情報を取得した簡単なwebアプリケーションです。">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="../../weathericon.png">
+    <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header id="header">
+        <h1 class="site-title">
+            <a href="weather.html">
+                <img src="SimpleWeather.png" alt="SimpleWeather">
+            </a>
+        </h1>
+        <nav>
+            <ul>
+                <li><a href="#about">今日の天気</a></li>
+                <li><a href="#work">設定気温との差</a></li>
+                <li><a href="#news"></a>NEWS</li>
+                <li><a href="#contact">連絡先</a></li>
+        </nav>
+    </header>
+    <main>
+        <div id="mainvisual">
+            <picture>
+            <source media="(max-width: 600px)" srcset="rain.png">
+            <img src="rain.png" alt="写真を表示することができません">
+        </picture>
+        </div>
+
+        <section id="about"></section>
+        <div id="name"></div>
+        <div id="weather"></div>
+        <div id="temperature"></div>
+    </main>
+    <script src="openweatherAPI.js">
+    </script>
+</body>
+</html>
