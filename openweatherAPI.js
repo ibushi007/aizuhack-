@@ -72,3 +72,4 @@ function SendNotification(title, body) {
         console.log('明確に通知を拒否しています');
     }
 }
+//変更する
