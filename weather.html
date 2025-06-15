@@ -1,45 +1,105 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>simpleweather</title>
-    <meta name="description" content="天気APIから情報を取得した簡単なwebアプリケーションです。">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="../../weathericon.png">
+    <title>今日の天気 - SimpleWeather</title>
+    <meta name="description" content="天気APIから情報を取得した簡単な天気Webアプリです。">
+    <link rel="icon" href="weathericon.png">
     <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: #e3f2fd;
+            font-family: 'Segoe UI', 'Meiryo', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: #1976d2;
+            color: #fff;
+            padding: 1em 0;
+            text-align: center;
+        }
+        header img {
+            height: 48px;
+            vertical-align: middle;
+        }
+        nav {
+            margin-top: 0.5em;
+        }
+        nav a {
+            color: #fff;
+            margin: 0 1em;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+        .container {
+            max-width: 500px;
+            margin: 2em auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            padding: 2em;
+        }
+        .weather-card {
+            text-align: center;
+            margin-bottom: 2em;
+        }
+        .weather-card img {
+            width: 100px;
+            height: 100px;
+        }
+        .label {
+            font-weight: bold;
+            color: #1976d2;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 2em;
+            color: #e53935;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-decoration: underline;
+        }
+        @media (max-width: 600px) {
+            .container { padding: 1em; }
+            .weather-card img { width: 70px; height: 70px; }
+        }
+    </style>
 </head>
 <body>
-    <header id="header">
-        <h1 class="site-title">
-            <a href="weather.html">
-                <img src="SimpleWeather.png" alt="SimpleWeather">
-            </a>
-        </h1>
-        <a href="game.html">game</a>
+    <header>
+        <img src="SimpleWeather.png" alt="SimpleWeather">
         <nav>
-            <ul>
-                <li><a href="#about">今日の天気</a></li>
-                <li><a href="#work">設定気温との差</a></li>
-                <li><a href="#news"></a>News</li>
-                <li><a href="#contact">連絡先</a></li>
+            <a href="#today">今日の天気</a>
+            <a href="#diff">気温差</a>
+            <a href="#about">使い方</a>
+            <a href="game.html">じゃんけんゲーム</a>
         </nav>
     </header>
     <main>
-        <div id="mainvisual">
-            <picture>
-            <source media="(max-width: 600px)" srcset="rain.png">
-            <img src="rain.png" alt="写真を表示することができません">
-        </picture>
+        <div class="container">
+            <section class="weather-card" id="today">
+                <h2>今日の天気</h2>
+                <div id="weather"></div>
+                <div id="temperature"></div>
+                <img id="weather-icon" src="rain.png" alt="天気アイコン">
+            </section>
+            <section class="weather-card" id="diff">
+                <h2>設定気温との差</h2>
+                <div id="temp-diff"></div>
+            </section>
+            <section id="about">
+                <h2>このサイトについて</h2>
+                <p>
+                    このサイトは天気APIを使って、今日の天気や気温、設定した気温との差をわかりやすく表示します。<br>
+                    下の「じゃんけんゲーム」ボタンからゲームにも移動できます！
+                </p>
+            </section>
+            <a href="game.html" class="back-link">じゃんけんゲームへ</a><br>
+            <a href="index.html" class="back-link">トップページへ戻る</a>
         </div>
-
-        <section id="about"></section>
-        <div id="name"></div>
-        <div id="weather"></div>
-        <div id="temperature"></div>
     </main>
-    <script src="openweatherAPI.js">
-    </script>
+    <script src="openweatherAPI.js"></script>
 </body>
 </html>
