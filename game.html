@@ -38,13 +38,19 @@
 </head>
 <body>
     <div class="game-container">
-        <img id="enemy-character" class="character" src="./image/enemy.png" alt="相手">
+        <div style="text-align:center;">
+            <div style="font-weight:bold; color:#1976d2; margin-bottom:4px;">ENEMY</div>
+            <img id="enemy-character" class="character" src="./image/enemy.png" alt="相手">
+        </div>
         <canvas
             id="screen"
             width="400"
             height="400"
             style="border:1px solid #000000;"></canvas>
-        <img id="player-character" class="character" src="./image/player.png" alt="プレイヤー">
+        <div style="text-align:center;">
+            <div style="font-weight:bold; color:#e53935; margin-bottom:4px;">PLAYER</div>
+            <img id="player-character" class="character" src="./image/player.png" alt="プレイヤー">
+        </div>
     </div>
     <div>
         <button id="rock" value="1">グー</button>

@@ -17,18 +17,37 @@ fetch(apiUrl)
     const cityname = data.name;
     const currentweather = data.weather[0].description;
 
-    console.log(`都市名: ${cityname}`);
-    console.log(`天気: ${weather}`);
-    console.log(`気温: ${temp}`);
-    console.log(`現在の天気: ${currentweather}`);
+    // 天気 main を日本語に変換する辞書
+    const weatherJP = {
+        Clear: '晴れ',
+        Clouds: 'くもり',
+        Rain: '雨',
+        Drizzle: '霧雨',
+        Thunderstorm: '雷雨',
+        Snow: '雪',
+        Mist: '霧',
+        Smoke: '煙',
+        Haze: 'もや',
+        Dust: 'ほこり',
+        Fog: '霧',
+        Sand: '砂',
+        Ash: '灰',
+        Squall: 'スコール',
+        Tornado: '竜巻'
+    };
+    const weatherTextJP = weatherJP[weather] || weather;
+    const currentweatherJP = currentweather; // descriptionはAPIでjaにできない場合はそのまま
+
+    // 今日の天気を日本語で表示
+    const weather1 = document.getElementById('weather');
+    if (weather1) weather1.textContent = `天気: ${weatherTextJP}（${currentweatherJP}）`;
+
+    // 気温表示
+    const temperature1 = document.getElementById('temperature');
+    if (temperature1) temperature1.textContent = `気温: ${temp}℃`;
 
     const name1 = document.getElementById('name');
-    const weather1 = document.getElementById('weather');
-    const temperature1 = document.getElementById('temperature');
-
-    name1.textContent = `都市名: ${cityname}`;
-    weather1.textContent = `天気: ${weather}`;
-    temperature1.textContent = `気温: ${temp}`;
+    if (name1) name1.textContent = `都市名: ${cityname}`;
 
     const warnweather = ['Rain'].includes(weather);
 
@@ -37,11 +56,64 @@ fetch(apiUrl)
         SendNotification(`${cityname}は今日は雨が降る予想です`,
         `現在の天気は${currentweather}です`
 );
-}
+    }
     else {
         SendNotification(`${cityname}の天気は${weather}です`,
             `現在の天気は${currentweather}です`
         );
+    }
+
+    // 気温差計算フォームの処理（バックエンドAPI経由）
+    const tempForm = document.getElementById('temp-form');
+    const userTempInput = document.getElementById('user-temp');
+    const tempDiffDiv = document.getElementById('temp-diff');
+
+    if (tempForm && userTempInput && tempDiffDiv) {
+        tempForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const userTempStr = userTempInput.value.trim();
+            const userTemp = parseFloat(userTempStr);
+            if (userTempStr === '' || isNaN(userTemp)) {
+                tempDiffDiv.textContent = '正しい数値を入力してください。';
+                tempDiffDiv.style.color = '#e53935';
+                return;
+            }
+            tempDiffDiv.textContent = '計算中...';
+            try {
+                const res = await fetch('http://localhost:3001/api/calc-diff', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userTemp })
+                });
+                const data = await res.json();
+                if (data.error) {
+                    tempDiffDiv.textContent = 'エラーが発生しました。';
+                    tempDiffDiv.style.color = '#e53935';
+                } else {
+                    tempDiffDiv.textContent = `実際の気温（${data.temp}℃）との差は ${data.diff.toFixed(1)}℃ です。`;
+                    tempDiffDiv.style.color = '#1976d2';
+                    // 通知
+                    if ('Notification' in window) {
+                        if (Notification.permission === 'granted') {
+                            new Notification('気温差のお知らせ', {
+                                body: `実際の気温: ${data.temp}℃\n設定気温: ${userTemp}℃\n差: ${data.diff.toFixed(1)}℃`
+                            });
+                        } else if (Notification.permission === 'default') {
+                            Notification.requestPermission().then(permission => {
+                                if (permission === 'granted') {
+                                    new Notification('気温差のお知らせ', {
+                                        body: `実際の気温: ${data.temp}℃\n設定気温: ${userTemp}℃\n差: ${data.diff.toFixed(1)}℃`
+                                    });
+                                }
+                            });
+                        }
+                    }
+                }
+            } catch (err) {
+                tempDiffDiv.textContent = 'サーバーに接続できません。';
+                tempDiffDiv.style.color = '#e53935';
+            }
+        });
     }
 })
 
@@ -70,6 +142,22 @@ function SendNotification(title, body) {
     }
     else{
         console.log('明確に通知を拒否しています');
+    }
+}
+
+// 気温差分を通知する関数
+function notifyTempDiff(actualTemp, userTemp, diff) {
+    if (!('Notification' in window)) return;
+    const title = '気温差のお知らせ';
+    const body = `実際の気温: ${actualTemp}℃\n設定気温: ${userTemp}℃\n差: ${diff.toFixed(1)}℃`;
+    if (Notification.permission === 'granted') {
+        new Notification(title, { body });
+    } else if (Notification.permission === 'default') {
+        Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+                new Notification(title, { body });
+            }
+        });
     }
 }
 //変更する

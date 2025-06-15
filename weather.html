@@ -87,6 +87,11 @@
             </section>
             <section class="weather-card" id="diff">
                 <h2>設定気温との差</h2>
+                <form id="temp-form">
+                    <label for="user-temp">自分が思う今日の気温（数字で入力してください）:</label>
+                    <input type="text" id="user-temp" name="user-temp" placeholder="例: 22.5" required>
+                    <button type="submit" id="calc-diff-btn" style="background:#e53935;color:#fff;font-weight:bold;padding:0.5em 1.2em;border:none;border-radius:6px;cursor:pointer;">差を計算する</button>
+                </form>
                 <div id="temp-diff"></div>
             </section>
             <section id="about">
