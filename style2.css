@@ -1,0 +1,27 @@
+body{
+    padding:0px;
+    margin:0px;
+    background-color: gray;
+}
+.li1{
+    position:relative;
+    left:20px;
+}
+.li2{
+    position:relative;
+    left:60px;
+}
+.li3{
+    position:relative;
+    left:100px;
+}
+.header{
+    background-color: white;
+    padding:10px;
+}
+.headerlist{
+    list-style: none;
+}
+li{
+    display:inline-block;
+}

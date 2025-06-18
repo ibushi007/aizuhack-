@@ -1,0 +1,97 @@
+body{
+    padding:0px;
+    margin:0px;
+}
+.li1{
+    position:relative;
+    left:20px;
+}
+.li2{
+    position:relative;
+    left:60px;
+}
+.li3{
+    position:relative;
+    left:100px;
+}
+.header{
+    background-color: white;
+    padding: 10px;
+}
+.headerlist{
+    list-style: none;
+}
+li{
+    display:inline-block;
+}
+.aa{
+    position:relative;
+    left:1300px;
+    background-color:white;
+    width:400px;
+    height: 550px;
+    font-size: 20px;
+}
+.m4{
+    background-image: url(ame.jpg);
+    background-size: cover;
+}
+.m2{
+    background-image: url(kumori.jpg);
+    background-size: cover;
+}
+.m3{
+    background-image: url(aozora2.jpg);
+    background-size: cover;
+}
+.m1{
+    background-color: brown;
+}
+h2{
+    position: relative;
+    left:80px;
+    top:20px;
+}
+#test{
+    position: relative;
+    left:160px;
+    top:100px;
+}
+#test2{
+    position: relative;
+    left: 170px;
+    top:130px;
+}
+#message1{
+    position: relative;
+    left: 50px;
+    top:180px;
+}
+#message2{
+    position: relative;
+    left: 50px;
+    top:180px;
+}
+#message3{
+    position: relative;
+    left: 50px;
+    top:180px;
+}
+.hidden{
+    display:none;
+}
+table{
+    position: relative;
+    top:50px;
+    left:50px;
+    background-color: aliceblue;
+    border-collapse: collapse;
+    width:700px;
+    height:400px;
+    table-layout: fixed;
+}
+th,td{
+    border: solid 1px;
+    text-align: center;
+    vertical-align: middle;
+}
