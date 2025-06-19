@@ -1,10 +1,12 @@
+//位置情報取得
 window.onload = function() {
-    if (navigator.geolocation) {
+    if (navigator.geolocation) {//もしnavigatorが使えるならば下の処理、使えない場合は一番下に処理がある。
         navigator.geolocation.getCurrentPosition(
             function(position) {
                 const latitude = position.coords.latitude;
                 const longitude = position.coords.longitude;
 
+                //設定温度のコード
                 const savebutton = document.getElementById("save")
                 if(savebutton){
                     savebutton.addEventListener("click", function() {

@@ -1,7 +1,8 @@
 body{
     padding:0px;
     margin:0px;
-    background-color: gray;
+    background-image: url(setting.jpg);
+    background-size: cover;
 }
 .li1{
     position:relative;
