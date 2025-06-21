@@ -115,6 +115,42 @@ fetch(apiUrl)
             }
         });
     }
+
+    // トップページの背景を天気に応じて変更
+    function changeWeatherBackground(weatherType) {
+        const body = document.body;
+        switch(weatherType) {
+            case 'Clear':
+                body.style.backgroundImage = "url('./image/sun.jpg')";
+                break;
+            case 'Clouds':
+                body.style.backgroundImage = "url('./image/clowd.jpg')";
+                break;
+            case 'Rain':
+            case 'Drizzle':
+                body.style.backgroundImage = "url('./image/rain.jpg')";
+                break;
+            default:
+                body.style.backgroundImage = "url('./image/sun.jpg')";
+                break;
+        }
+    }
+
+    // 天気に応じて背景を変更
+    changeWeatherBackground(weather);
+
+    // じゃんけんゲームへのリンクに天気情報を追加
+    const gameLink = document.getElementById('game-link');
+    if (gameLink) {
+        // 天気に応じてリンクを変更
+        if (weather === 'Clear') {
+            gameLink.href = 'game.html?weather=hare';
+        } else if (weather === 'Clouds') {
+            gameLink.href = 'game.html?weather=kumori';
+        } else {
+            gameLink.href = 'game.html?weather=default';
+        }
+    }
 })
 
 function SendNotification(title, body) {

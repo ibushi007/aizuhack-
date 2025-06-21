@@ -173,8 +173,66 @@
     } else if (result === 1) {
       alert('あなたの負けです!');
     } else {
-      alert('あなたの勝ちです!');
+      // 勝利演出の設定を確認
+      const victoryEffect = localStorage.getItem('victoryEffect') || 'on';
+      if (victoryEffect === 'on') {
+        // 勝利時のUI変更とトップページへの移動
+        showVictoryUI();
+      } else {
+        // 従来のアラート表示
+        alert('あなたの勝ちです!');
+      }
     }
+  }
+
+  // 勝利時のUI変更とトップページへの移動
+  function showVictoryUI() {
+    // 勝利メッセージを表示
+    const victoryMessage = document.createElement('div');
+    victoryMessage.style.cssText = `
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+      color: white;
+      padding: 30px 50px;
+      border-radius: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      z-index: 1000;
+      animation: victoryPulse 1s ease-in-out;
+    `;
+    victoryMessage.innerHTML = `
+      🎉 あなたの勝ちです！ 🎉<br>
+      <small style="font-size: 16px; margin-top: 10px; display: block;">3秒後にトップページに戻ります...</small>
+    `;
+    
+    // 勝利アニメーションのCSS
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes victoryPulse {
+        0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+        50% { transform: translate(-50%, -50%) scale(1.1); }
+        100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    document.body.appendChild(victoryMessage);
+    
+    // 3秒後にトップページに移動（勝利フラグ付き）
+    setTimeout(() => {
+      // グローバル関数を呼び出して勝利フラグを設定
+      if (typeof goToTopPageWithVictory === 'function') {
+        goToTopPageWithVictory();
+      } else {
+        localStorage.setItem('showVictoryMessage', 'true');
+        window.location.href = 'weather.html';
+      }
+    }, 3000);
   }
 
   // ボタンクリック時の処理の定義を行ってから、アニメーションを開始する

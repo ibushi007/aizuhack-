@@ -13,6 +13,10 @@
             font-family: 'Segoe UI', 'Meiryo', sans-serif;
             margin: 0;
             padding: 0;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            transition: background 0.5s ease;
         }
         header {
             background: #1976d2;
@@ -65,9 +69,48 @@
             .container { padding: 1em; }
             .weather-card img { width: 70px; height: 70px; }
         }
+        .victory-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            z-index: 1000;
+            animation: slideDown 0.5s ease-out;
+        }
+        @keyframes slideDown {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(0); }
+        }
+        .victory-mode {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .victory-mode .container {
+            background: rgba(255,255,255,0.95);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        /* 天気別背景のオーバーレイ */
+        .weather-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            z-index: -1;
+        }
     </style>
 </head>
 <body>
+    <div class="weather-overlay"></div>
+    <div id="victory-banner" class="victory-banner" style="display: none;">
+        🎉 じゃんけんに勝利しました！おめでとうございます！ 🎉
+    </div>
     <header>
         <img src="SimpleWeather.png" alt="SimpleWeather">
         <nav>
@@ -101,10 +144,37 @@
                     下の「じゃんけんゲーム」ボタンからゲームにも移動できます！
                 </p>
             </section>
-            <a href="game.html" class="back-link">じゃんけんゲームへ</a><br>
+            <a href="game.html" class="back-link" id="game-link">じゃんけんゲームへ</a><br>
             <a href="index.html" class="back-link">トップページへ戻る</a>
         </div>
     </main>
     <script src="openweatherAPI.js"></script>
+    <script>
+        // ページ読み込み時に勝利フラグをチェック
+        window.addEventListener('load', function() {
+            const showVictoryMessage = localStorage.getItem('showVictoryMessage');
+            if (showVictoryMessage === 'true') {
+                // 勝利フラグをクリア
+                localStorage.removeItem('showVictoryMessage');
+                
+                // 勝利バナーを表示
+                const victoryBanner = document.getElementById('victory-banner');
+                victoryBanner.style.display = 'block';
+                
+                // ページ全体を勝利モードに変更
+                document.body.classList.add('victory-mode');
+                
+                // 5秒後に勝利バナーを非表示
+                setTimeout(() => {
+                    victoryBanner.style.display = 'none';
+                }, 5000);
+                
+                // 10秒後に勝利モードを解除
+                setTimeout(() => {
+                    document.body.classList.remove('victory-mode');
+                }, 10000);
+            }
+        });
+    </script>
 </body>
 </html>

@@ -6,6 +6,7 @@
         body {
             background: url('./image/hikuseruatono-chuanno-feng-jingirasuto.jpg') no-repeat center center fixed;
             background-size: cover;
+            transition: background 0.5s ease;
         }
         .game-container {
             display: flex;
@@ -21,12 +22,57 @@
             box-shadow: 0 4px 16px rgba(0,0,0,0.15);
             border: 4px solid #fff;
             background: #f8f8f8;
+            transition: all 0.3s ease;
         }
         #player-character {
             transform: scaleX(-1);
         }
         #enemy-character {
             transform: scaleX(1);
+        }
+        .weather-controls {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 10px;
+        }
+        .weather-btn {
+            background: #1976d2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+        .weather-btn:hover {
+            background: #1565c0;
+        }
+        .weather-btn.active {
+            background: #e53935;
+        }
+        .victory-toggle {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            margin: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+        .victory-toggle:hover {
+            background: #45a049;
+        }
+        .victory-toggle.off {
+            background: #f44336;
+        }
+        .victory-toggle.off:hover {
+            background: #da190b;
         }
         a.back-to-top {
             color: #e53935;
@@ -37,6 +83,14 @@
     </style>
 </head>
 <body>
+    <div class="weather-controls">
+        <h3>天気を選択してください</h3>
+        <button class="weather-btn" onclick="changeWeather('hare')">晴れ</button>
+        <button class="weather-btn" onclick="changeWeather('kumori')">曇り</button>
+        <button class="weather-btn" onclick="changeWeather('default')">デフォルト</button>
+        <br><br>
+        <button class="victory-toggle" id="victory-toggle" onclick="toggleVictoryEffect()">勝利演出: ON</button>
+    </div>
     <div class="game-container">
         <div style="text-align:center;">
             <div style="font-weight:bold; color:#1976d2; margin-bottom:4px;">ENEMY</div>
@@ -60,5 +114,88 @@
     </div>
     <a href="weather.html" class="back-to-top">トップページへ戻る</a>
     <script src="./Rock-Paper-Scissors.js"></script>
+    <script>
+        // URLパラメータから天気情報を取得して自動設定
+        function getWeatherFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const weather = urlParams.get('weather');
+            if (weather) {
+                changeWeather(weather);
+                // 対応するボタンをアクティブにする
+                const buttons = document.querySelectorAll('.weather-btn');
+                buttons.forEach(btn => {
+                    if (btn.onclick.toString().includes(weather)) {
+                        btn.classList.add('active');
+                    }
+                });
+            }
+        }
+
+        // 天気切り替え機能
+        function changeWeather(weatherType) {
+            const body = document.body;
+            const playerChar = document.getElementById('player-character');
+            const enemyChar = document.getElementById('enemy-character');
+            const buttons = document.querySelectorAll('.weather-btn');
+            
+            // ボタンのアクティブ状態を更新
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // 背景とキャラクターを変更
+            switch(weatherType) {
+                case 'hare':
+                    body.style.backgroundImage = "url('./image/hare.jpg')";
+                    enemyChar.src = './image/harecharacter.png';
+                    break;
+                case 'kumori':
+                    body.style.backgroundImage = "url('./image/kumori.jpg')";
+                    enemyChar.src = './image/kumoricharacter.png';
+                    break;
+                case 'default':
+                    body.style.backgroundImage = "url('./image/hikuseruatono-chuanno-feng-jingirasuto.jpg')";
+                    enemyChar.src = './image/enemy.png';
+                    break;
+            }
+        }
+
+        // ページ読み込み時に天気情報を自動設定
+        window.addEventListener('load', getWeatherFromURL);
+
+        // 勝利演出の切り替え機能
+        function toggleVictoryEffect() {
+            const toggleBtn = document.getElementById('victory-toggle');
+            const isOn = toggleBtn.classList.contains('off');
+            
+            if (isOn) {
+                // ONにする
+                toggleBtn.classList.remove('off');
+                toggleBtn.textContent = '勝利演出: ON';
+                localStorage.setItem('victoryEffect', 'on');
+            } else {
+                // OFFにする
+                toggleBtn.classList.add('off');
+                toggleBtn.textContent = '勝利演出: OFF';
+                localStorage.setItem('victoryEffect', 'off');
+            }
+        }
+
+        // ページ読み込み時に勝利演出の設定を復元
+        window.addEventListener('load', function() {
+            const victoryEffect = localStorage.getItem('victoryEffect') || 'on';
+            const toggleBtn = document.getElementById('victory-toggle');
+            
+            if (victoryEffect === 'off') {
+                toggleBtn.classList.add('off');
+                toggleBtn.textContent = '勝利演出: OFF';
+            }
+        });
+
+        // トップページに戻る際に勝利フラグを設定
+        function goToTopPageWithVictory() {
+            localStorage.setItem('showVictoryMessage', 'true');
+            window.location.href = 'weather.html';
+        }
+    </script>
 </body>
 </html>
