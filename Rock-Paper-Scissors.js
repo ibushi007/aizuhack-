@@ -169,7 +169,10 @@
     const result = (myHandType - Math.abs(enemyHandType) + 3) % HAND_FORMS.length;
 
     if (result === 0) {
-      alert('引き分けです!');
+      // 引き分けの場合は通知せずに自動再開
+      setTimeout(() => {
+        isPause = false; // アニメーションを再開
+      }, 1000); // 1秒後に再開
     } else if (result === 1) {
       alert('あなたの負けです!');
     } else {

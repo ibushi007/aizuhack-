@@ -63,6 +63,9 @@ fetch(apiUrl)
         );
     }
 
+    // 天気情報をlocalStorageに保存（じゃんけんゲームで自動設定するため）
+    localStorage.setItem('currentWeather', weather);
+
     // 気温差計算フォームの処理（バックエンドAPI経由）
     const tempForm = document.getElementById('temp-form');
     const userTempInput = document.getElementById('user-temp');
@@ -147,6 +150,8 @@ fetch(apiUrl)
             gameLink.href = 'game.html?weather=hare';
         } else if (weather === 'Clouds') {
             gameLink.href = 'game.html?weather=kumori';
+        } else if (weather === 'Rain' || weather === 'Drizzle') {
+            gameLink.href = 'game.html?weather=default';
         } else {
             gameLink.href = 'game.html?weather=default';
         }
