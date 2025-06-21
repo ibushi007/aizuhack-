@@ -1,12 +1,11 @@
-//位置情報取得
 window.onload = function() {
-    if (navigator.geolocation) {//もしnavigatorが使えるならば下の処理、使えない場合は一番下に処理がある。
+    if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             function(position) {
                 const latitude = position.coords.latitude;
                 const longitude = position.coords.longitude;
 
-                //設定温度のコード
+
                 const savebutton = document.getElementById("save")
                 if(savebutton){
                     savebutton.addEventListener("click", function() {
@@ -19,8 +18,8 @@ window.onload = function() {
                 }
                 
 
-                const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&daily=weather_code,temperature_2m_max,temperature_2m_min,rain_sum,wind_speed_10m_max`;
-                //&hourly=temperature_2m,weather_code,wind_speed_10m,rain
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&daily=weather_code,temperature_2m_max,temperature_2m_min,rain_sum,wind_speed_10m_max&hourly=temperature_2m,weather_code,wind_speed_10m,rain&timezone=Asia%2FTokyo`;
+                //
 
                 //const tem = document.getElementById('temp').value; //設定温度（文字列で入力される）
 
@@ -68,10 +67,66 @@ window.onload = function() {
                         };
 
                         const description = weatherDescriptions[weathercode] || "不明";
+                        document.getElementById('nowwe').innerHTML = description;
 
                         //消すのここ
                         //const weatherText = `気温: ${temperature}°C<br>風速: ${windspeed} km/h<br>天気: ${description} <br>気温: ${set_temp}℃`;
                         //document.getElementById('weather').innerHTML = weatherText;
+
+
+                        //tuika----------------------------------------------------------------------------------------------------------------------------------------
+                        const now = new Date();
+
+                        const year = now.getFullYear();
+                        const month = String(now.getMonth() + 1).padStart(2, '0');
+                        const day = String(now.getDate()).padStart(2, '0');
+                        const hour = String(now.getHours()).padStart(2, '0');
+
+                        const nowISO = `${year}-${month}-${day}T${hour}:00`;
+
+
+                        // 現在時刻のインデックスを取得
+                        const startIndex = data.hourly.time.indexOf(nowISO);
+
+                        if (startIndex === -1) {
+                            document.getElementById("hotable").innerText = "現在時刻のデータが見つかりません。";
+                            return;
+                        }
+
+                        const weatherCodes = {
+                            0: "晴れ",
+                            1: "晴れ",
+                            2: "曇り",
+                            3: "曇り",
+                            45: "霧",
+                            48: "霧と霜",
+                            51: "霧雨",
+                            61: "雨",
+                            63: "雨",
+                            65: "雨",
+                            80: "小雨",
+                            81: "中雨",
+                            82: "激しい雨"
+                            };
+
+                        const n = startIndex;
+
+                        for (let i = 0; i < 20; i++) {
+                            const time = data.hourly.time[n + i].slice(11, 13); // "HH"
+                            const temp = data.hourly.temperature_2m[n + i];
+                            const code = data.hourly.weather_code[n + i];
+
+                            document.getElementById(`time${i + 1}`).innerHTML = `${time}時`;
+                            document.getElementById(`w${i + 1}`).innerHTML = weatherCodes[code] || "不明";
+                            document.getElementById(`c${i + 1}`).innerHTML = `${temp}℃`;
+                        }
+
+                        
+
+                        const today_temp = `${temperature}℃`;
+                        document.getElementById('ttem').innerHTML = today_temp;
+                        //tuika-------------------------------------------------------------------------------------------------------------------------------------
+
 
                         const weather_temp = ` ${set_temp}℃`;
                         document.getElementById('test').innerHTML = weather_temp;
@@ -89,6 +144,14 @@ window.onload = function() {
                         const temperature2 = weather1.temperature_2m_min;
                         const rainsum1 = weather1.rain_sum;
                         const windspeed1 = weather1.wind_speed_10m_max;
+
+                        //------------------------------------------------------------------------------------------------------------------------------------------------------
+                        const today_max = ` ${temperature1[0]}℃`;
+                        document.getElementById('ttwe').innerHTML = today_max;
+                        const today_min =  `${temperature2[0]}℃`;
+                        document.getElementById('tttem').innerHTML = today_min;
+
+
                         //日ごとの天気を得るための文
                         const weathercode1 = weather1.weather_code[1];        
                         const weathercode2 = weather1.weather_code[2];
@@ -128,6 +191,7 @@ window.onload = function() {
                         const description5 = weatherDescriptions1[weathercode5] || "不明";
                         const description6 = weatherDescriptions1[weathercode6] || "不明";
 
+                        //for使えばよかった
                         //Today.data
                         const weatherText1 = `${temperature1[0]}°C`;
                         const weatherText2 = `${temperature2[0]}°C`
@@ -230,15 +294,12 @@ window.onload = function() {
  
 
                             //設定温度との誤差によって服装を勧める。
-                        if (set_temp >= 10){ //設定温度との誤差が10以上であれば半袖を勧める。
-                            document.getElementById('test2').innerHTML = '半袖を勧める';
+                        if (set_temp >= 0){ //設定温度との誤差が10以上であれば半袖を勧める。
+                            document.getElementById('test2').innerHTML = '半袖を着よう';
                             message_1.classList.remove('hidden');
-                        } else if (set_temp <= 10) {
-                            document.getElementById('test2').innerHTML = '長袖';
+                        } else if (set_temp < 0) {
+                            document.getElementById('test2').innerHTML = '長袖を着よう';
                             message_2.classList.remove('hidden');
-                        } else {
-                            document.getElementById('test2').innerHTML = 'aa';
-                            message_3.classList.remove('hidden');
                         }    
 
                         //天気によって背景を変える。上記の記述を参照。
