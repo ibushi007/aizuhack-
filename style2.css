@@ -1,0 +1,32 @@
+body{
+    padding:0px;
+    margin:0px;
+    background-image: url(setting.jpg);
+    background-size: cover;
+}
+.li1{
+    position:relative;
+    left:20px;
+}
+.li2{
+    position:relative;
+    left:60px;
+}
+.li3{
+    position:relative;
+    left:100px;
+}
+.header{
+    background-color: white;
+    padding:10px;
+}
+.headerlist{
+    list-style: none;
+}
+li{
+    display:inline-block;
+}
+h1{
+    display: flex;
+    justify-content: center;
+}
