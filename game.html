@@ -6,6 +6,8 @@
         body {
             background: url('./image/hikuseruatono-chuanno-feng-jingirasuto.jpg') no-repeat center center fixed;
             background-size: cover;
+            padding:0px;
+            margin:0px;
         }
         .game-container {
             display: flex;
@@ -34,9 +36,39 @@
             font-size: 1.2em;
             text-decoration: underline;
         }
+        .li1{
+            position:relative;
+            left:20px;
+        }
+        .li2{
+            position:relative;
+            left:60px;
+        }
+        .li3{
+            position:relative;
+            left:100px;
+        }
+        .header{
+            background-color: white;
+            padding: 10px;
+        }
+        .headerlist{
+            list-style: none;
+        }
+        li{
+            display:inline-block;
+        }
     </style>
 </head>
 <body>
+    <div class="header">
+        <ul class="headerlist">
+            <li class="li1"><a href="main.html">HOME</a></li>
+            <li class="li2"><a href="game.html">GAME</a></li>
+            <li class="li3"><a href="setting.html">Setting</a></li>
+        </ul> 
+    </div>
+
     <div class="game-container">
         <div style="text-align:center;">
             <div style="font-weight:bold; color:#1976d2; margin-bottom:4px;">ENEMY</div>
