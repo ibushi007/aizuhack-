@@ -233,7 +233,7 @@
         goToTopPageWithVictory();
       } else {
         localStorage.setItem('showVictoryMessage', 'true');
-        window.location.href = 'weather.html';
+        window.location.href = 'main.html';
       }
     }, 3000);
   }

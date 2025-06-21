@@ -112,7 +112,7 @@
         <button id="paper" value="0">パー</button>
         <button id="restart">再開</button>
     </div>
-    <a href="main.html" class="back-to-top">トップページへ戻る</a>
+    <a href="weather.html" class="back-to-top">トップページへ戻る</a>
     <script src="./Rock-Paper-Scissors.js"></script>
     <script>
         // URLパラメータから天気情報を取得して自動設定
@@ -230,7 +230,7 @@
         // トップページに戻る際に勝利フラグを設定
         function goToTopPageWithVictory() {
             localStorage.setItem('showVictoryMessage', 'true');
-            window.location.href = 'weather.html';
+            window.location.href = 'main.html';
         }
     </script>
 </body>
